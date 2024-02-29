@@ -1,0 +1,24 @@
+UPDATE employees e
+SET e.salary = (
+    SELECT AVG(s.salary)
+    FROM employees s
+    WHERE e.department = s.department
+)
+WHERE e.salary < (
+    SELECT AVG(s.salary)
+    FROM employees s
+    WHERE e.department = s.department
+);
+
+DELETE FROM employees
+WHERE department = 'HR'
+AND salary < (
+    SELECT AVG(salary)
+    FROM employees
+    WHERE department = 'HR'
+);
+
+INSERT INTO new_employees (id, name, department)
+SELECT id, name, 'Finance'
+FROM employees
+WHERE department = 'Finance';
